@@ -9,14 +9,19 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@mapbox/geojson-extent": "^1.0.1",
     "@nextui-org/react": "^2.2.9",
+    "date-fns": "^3.2.0",
+    "geojson-bbox": "^0.0.1",
     "mapbox-gl": "^3.1.0",
     "next": "14.0.4",
     "react": "^18",
     "react-dom": "^18",
-    "react-map-gl": "^7.1.7"
+    "react-map-gl": "^7.1.7",
+    "tailwind-scrollbar": "^3.0.5"
   },
   "devDependencies": {
+    "@types/mapbox__geojson-extent": "^1.0.3",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",

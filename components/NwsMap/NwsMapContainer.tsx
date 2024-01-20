@@ -1,4 +1,4 @@
-import NwsMap from "./NwsMap2";
+import NwsMap from "./NwsMap";
 export default function NwsMapContainer() {
   return <NwsMap />;
 }

@@ -1,9 +1,14 @@
 import { StationsGeoJson } from "@/lib/types/nws";
 import { createContext, useContext } from "react";
 
+export type StationContextValue = {
+  stationsGeoJson: StationsGeoJson | undefined;
+  fetching: boolean;
+};
+
 export type StationContextType = {
-  value: StationsGeoJson | undefined;
-  setValue: (value: StationsGeoJson) => void;
+  value: StationContextValue | undefined;
+  setValue: (value: StationContextValue) => void;
 };
 
 export const StationContext = createContext<StationContextType | undefined>(

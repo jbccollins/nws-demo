@@ -54,10 +54,6 @@ export enum StateCode {
   WV = "WV",
   WI = "WI",
   WY = "WY",
-  MP = "MP",
-  PW = "PW",
-  FM = "FM",
-  MH = "MH",
 }
 
 export const stateCodeToStateName: Record<StateCode, string> = {
@@ -116,10 +112,6 @@ export const stateCodeToStateName: Record<StateCode, string> = {
   [StateCode.WV]: "West Virginia",
   [StateCode.WI]: "Wisconsin",
   [StateCode.WY]: "Wyoming",
-  [StateCode.MP]: "Northern Mariana Islands",
-  [StateCode.PW]: "Palau",
-  [StateCode.FM]: "Federated States of Micronesia",
-  [StateCode.MH]: "Marshall Islands",
 };
 
 export const stateCodeNameList = Object.entries(stateCodeToStateName).map(
@@ -152,4 +144,58 @@ export type StationsGeoJson = {
     next?: string;
   };
   type: "FeatureCollection";
+};
+
+// We don't actually care about the coordinates for this type since we aren't
+// rendering the shape on the map so we omit that from the type
+export type ZonesForecastJson = {
+  id: string;
+  properties: {
+    updated: string;
+    zone: string;
+    periods: {
+      number: number;
+      name: string;
+      detailedForecast: string;
+    }[];
+  };
+};
+
+// There are a lot of other properties in the points json but we only care about
+// the forecast url
+export type PointsJson = {
+  properties: {
+    forecastHourly: string;
+    forecast: string;
+  };
+};
+
+export type HoverForecastData = {
+  zoneId: string;
+  data: ZonesForecastJson | undefined;
+  fetching?: boolean;
+};
+
+export type GridpointsForecastJson = {
+  properties: {
+    periods: {
+      number: number;
+      name: string;
+      startTime: string;
+      endTime: string;
+      isDaytime: boolean;
+      temperature: number;
+      temperatureUnit: string;
+      temperatureTrend?: string;
+      windSpeed: string;
+      windDirection: string;
+      icon: string;
+      shortForecast: string;
+      detailedForecast: string;
+      probabilityOfPrecipitation: {
+        unitCode: string;
+        value: number | null;
+      };
+    }[];
+  };
 };

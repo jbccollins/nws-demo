@@ -8,10 +8,15 @@ import nwsApi from "@/lib/nws/api";
 export default function Search() {
   const stationContext = useStationContext();
   const handleChange = async (key: string | number) => {
-    console.log(key);
+    stationContext.setValue({
+      stationsGeoJson: undefined,
+      fetching: true,
+    });
     const stations = await nwsApi.getStations(key as StateCode);
-    console.log(stations);
-    stationContext.setValue(stations);
+    stationContext.setValue({
+      stationsGeoJson: stations,
+      fetching: false,
+    });
   };
   return (
     <div>

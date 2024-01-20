@@ -10,3 +10,7 @@ body {
   overflow: hidden;
   background-color: #2b2b2b;
 }
+
+.mapboxgl-ctrl-bottom-left, .mapboxgl-ctrl-bottom-right {
+  display: none;
+}

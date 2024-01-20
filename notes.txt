@@ -1,0 +1,7 @@
+1. Get the stations for a given state: https://api.weather.gov/stations?state=AL&limit=500
+This response contains the geosjon coordinates for each station
+2. On hover, fetch and cache the basic forecast url. Show in a tooltip: https://api.weather.gov/zones/ObservationStation/ALZ261/forecast
+3. On click look up the station in the list of stations and use the coordinates to hit the points endpoint
+https://api.weather.gov/points/33.4808,-86.7199
+4. Use the response "forecastHourly" url to hit the gridpoints forecast api
+https://api.weather.gov/gridpoints/BMX/63,83/forecast/hourly
