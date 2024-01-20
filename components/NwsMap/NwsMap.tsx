@@ -158,6 +158,11 @@ export default function NwsMap() {
 
     const mapboxSource = mapRef.current.getSource("stations") as GeoJSONSource;
 
+    // No points have been added yet
+    if (!mapboxSource) {
+      return;
+    }
+
     mapboxSource.getClusterExpansionZoom(clusterId, (err, zoom) => {
       if (err) {
         return;

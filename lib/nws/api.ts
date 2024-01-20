@@ -5,6 +5,9 @@ import {
   StationsGeoJson,
   ZonesForecastJson,
 } from "@/lib/types/nws";
+import { RoughUsaPolygon } from "@/constants/roughUsaPolygon";
+// @ts-expect-error
+import { point, booleanPointInPolygon } from "@turf/turf";
 
 const nwsApiBaseUrl = "https://api.weather.gov";
 
@@ -27,6 +30,27 @@ const fetchWithExponentialBackoff = async (
   return response;
 };
 
+const alaskaBoundingBox = [-179.148909, 51.214183, 179.77847, 71.5388];
+const hawaiiBoundingBox = [-178.334698, 18.910361, -154.806773, 28.402123];
+
+const isPointInBoundingBox = (
+  longitude: number,
+  latitude: number,
+  boundingBox: number[]
+) => {
+  return (
+    longitude >= boundingBox[0] &&
+    latitude >= boundingBox[1] &&
+    longitude <= boundingBox[2] &&
+    latitude <= boundingBox[3]
+  );
+};
+
+const isPointInUsaPolygon = (longitude: number, latitude: number): boolean => {
+  const pt = point([longitude, latitude]);
+  return booleanPointInPolygon(pt, RoughUsaPolygon);
+};
+
 // e.g: https://api.weather.gov/stations?state=AL&limit=500
 const getStations = async (stateCode: StateCode, limit?: number) => {
   const _limit = limit || 500;
@@ -45,6 +69,17 @@ const getStations = async (stateCode: StateCode, limit?: number) => {
     nextUrl = moreStations.pagination?.next;
     maxCalls--;
   }
+  // TODO: This is a sanity hack to filter out stations that are clearly way outside of the US.
+  // Some results come back with coordinates in europe which is very odd.
+  stations.features = stations.features.filter((s) => {
+    const [longitude, latitude] = s.geometry.coordinates;
+    return (
+      //isPointInBoundingBox(longitude, latitude, usBoundingBox) ||
+      isPointInBoundingBox(longitude, latitude, alaskaBoundingBox) ||
+      isPointInBoundingBox(longitude, latitude, hawaiiBoundingBox) ||
+      isPointInUsaPolygon(longitude, latitude)
+    );
+  });
   return stations;
 };
 
